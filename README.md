@@ -26,14 +26,14 @@ Running `checkpoint1.py` loads `umist_cropped.mat`, performs stratified splittin
 
 ## Checkpoint #1 Summary
 
-1. **Data Preparation:** Loaded 575 images into a Pandas `DataFrame` (10,304 pixel features + `label`) and plotted sample faces (`plots/01_sample_faces.png`).
-2. **Stratified Split & Scaling:** 70/15/15 split (`402 / 86 / 87`) preserving class ratios (19–48 images/person), with `StandardScaler` fit on train only (`plots/02_split_distribution.png`).
-3. **Dimensionality Reduction:** Compared PCA (`10/20/50/100` components; selected **PCA-50** at **88.8%** cumulative variance) and 2D t-SNE (`plots/03_dim_reduction.png`).
-4. **Clustering (`k = 20` on PCA-50):** Tuned K-Means (`k`) and Hierarchical (`linkage`) (`plots/04_clustering_tuning.png`, `plots/05_clustering_2d.png`).
+1. **Data Preparation & EDA Insights:** Loaded 575 images into a Pandas `DataFrame` (10,304 pixel features + `label`), checked quality (0 NaNs, 10 exact duplicates), and visualized sample faces, class imbalance, brightness variation, scaling effect, and head-pose rotation (`plots/01_sample_faces.png`, `plots/01b_dataset_insights.png`).
+2. **Stratified Split & Normalization:** 70/15/15 split (`402 / 86 / 87`) preserving class ratios (19–48 images/person), with `MinMaxScaler` (`[0, 1]`) fit on train only (`plots/02_split_distribution.png`).
+3. **Dimensionality Reduction:** Evaluated PCA by variance retention (`80%→22`, `85%→32`, `90%→52`, `95%→99` components; selected **PCA 90% = 52 components**) and 2D t-SNE (`plots/03_dim_reduction.png`).
+4. **Clustering (`k = 20` on PCA-90%):** Tuned K-Means (`k`) and Hierarchical (`linkage`) (`plots/04_clustering_tuning.png`, `plots/05_clustering_2d.png`).
 
 | Method                        | Silhouette |    ARI    |    NMI    |  Purity   |
 | :---------------------------- | :--------: | :-------: | :-------: | :-------: |
-| K-Means (`k=20`)              |   0.218    |   0.366   |   0.678   |   0.535   |
-| Hierarchical (`ward`, `k=20`) | **0.219**  | **0.382** | **0.695** | **0.537** |
+| K-Means (`k=20`)              | **0.230**  |   0.360   |   0.682   | **0.560** |
+| Hierarchical (`ward`, `k=20`) |   0.223    | **0.397** | **0.714** |   0.552   |
 
 See [checkpoint1_report.md](checkpoint1_report.md) for the full analysis.
